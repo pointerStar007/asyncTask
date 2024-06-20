@@ -190,14 +190,14 @@ def at(queue_name, currt=10, redis_connect=None, max_connections=None):
 
             async def exec(self):
                 if self.is_close:
-                    raise RuntimeError("the redis-pool is running")
+                    raise RuntimeError("the redis-pool is closed")
                 logger = get_logger()
                 logger.info(f"{queue_name} is running")
                 await async_task_manager.exec_job(job)
 
             async def close(self):
                 logger = get_logger()
-                logger.info(f"{queue_name} is closed")
+                logger.info(f"{queue_name} is running")
                 await async_task_manager.close(job)
                 self.is_close = True
 

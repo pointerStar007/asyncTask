@@ -1,0 +1,6 @@
+MAX_CONNECTIONS: 10
+REDIS_CONNECT: redis://localhost:6379
+#WEB_HOST: 127.0.0.1
+#PORT: 8000
+# 暂时未开发Web监控，不过执行统计已经写入了redis
+log_to_console: False
