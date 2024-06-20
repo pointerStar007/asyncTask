@@ -6,7 +6,7 @@
 # @Software: PyCharm
 from abc import ABCMeta, abstractmethod
 from redis import asyncio as aioredis
-from asyncTask.async_task import Task
+from asyncTaskmini.async_task import Task
 import msgpack
 import uuid
 

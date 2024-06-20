@@ -9,9 +9,10 @@ from setuptools import setup, find_packages
 
 # 定义包的元数据
 setup(
-    name='asyncTask',  # 包的名称，在 PyPI 上必须是唯一的
+    name='asyncTaskmini',  # 包的名称，在 PyPI 上必须是唯一的
     version='0.1.0',  # 包的版本号，遵循 PEP 440
-    packages=find_packages(),  # 自动查找包和子包
+    packages= find_packages(),  # 自动查找包和子包
+    python_requires='>=3.6',
     # 手动指定包含哪些包（如果不需要自动查找）
     # packages=['your_package_name', 'your_package_name.subpackage'],
 
@@ -26,23 +27,18 @@ setup(
 
     # 包的依赖项
     install_requires=[
-        'schedule==1.2.2',
-        'colorlog==6.8.2',
-        'msgpack==1.0.8',
-        'pyyaml==6.0.1',
-        'py-redis==1.1.1'
+        'PyYAML',
+        'schedule',
+        'colorlog',
+        'msgpack',
+        'redis'  # 假设您想要的是 redis-py 而不是 py-redis
     ],
 
     # 额外的元数据
     classifiers=[
         'Development Status :: 4 - Beta',  # 开发状态
-        'Intended Audience :: Developers',  # 目标受众
+        'Intended Audience :: Developers',  # 目标受众（已修正拼写）
         'License :: OSI Approved :: MIT License',  # 许可证
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10+',
         'Topic :: Software Development :: Libraries :: Python Modules',  # 主题
     ],
 

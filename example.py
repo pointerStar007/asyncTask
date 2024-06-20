@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 import asyncio
-from asyncTask import at
+from asyncTaskmini import at
 from aiohttp import ClientSession
 
 

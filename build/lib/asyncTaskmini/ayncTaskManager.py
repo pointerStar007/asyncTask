@@ -10,8 +10,8 @@ import json
 import os
 import time
 from datetime import datetime
-from asyncTask.async_task import TaskStus
-from asyncTask.async_queue import RedisTaskQueue
+from asyncTaskmini.async_task import TaskStus
+from asyncTaskmini.async_queue import RedisTaskQueue
 from utils.logs import get_logger, get_local_ip
 from utils.singletion import Singletion
 import schedule
@@ -190,14 +190,14 @@ def at(queue_name, currt=10, redis_connect=None, max_connections=None):
 
             async def exec(self):
                 if self.is_close:
-                    raise RuntimeError("the redis-pool is closed")
+                    raise RuntimeError("the redis-pool is running")
                 logger = get_logger()
                 logger.info(f"{queue_name} is running")
                 await async_task_manager.exec_job(job)
 
             async def close(self):
                 logger = get_logger()
-                logger.info(f"{queue_name} is running")
+                logger.info(f"{queue_name} is closed")
                 await async_task_manager.close(job)
                 self.is_close = True
 

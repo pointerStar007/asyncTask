@@ -10,8 +10,8 @@ import json
 import os
 import time
 from datetime import datetime
-from asyncTask.async_task import TaskStus
-from asyncTask.async_queue import RedisTaskQueue
+from asyncTaskmini.async_task import TaskStus
+from asyncTaskmini.async_queue import RedisTaskQueue
 from utils.logs import get_logger, get_local_ip
 from utils.singletion import Singletion
 import schedule

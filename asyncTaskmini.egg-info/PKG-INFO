@@ -1,5 +1,5 @@
 Metadata-Version: 2.1
-Name: asyncTask
+Name: asyncTaskmini
 Version: 0.1.0
 Summary: Lightweight asynchronous distributed task library
 Home-page: https://github.com/pointerStar007/asyncTask
@@ -9,19 +9,15 @@ License: MIT
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: MIT License
-Classifier: Programming Language :: Python :: 3.6
-Classifier: Programming Language :: Python :: 3.7
-Classifier: Programming Language :: Python :: 3.8
-Classifier: Programming Language :: Python :: 3.9
-Classifier: Programming Language :: Python :: 3.10+
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: schedule==1.2.2
-Requires-Dist: colorlog==6.8.2
-Requires-Dist: msgpack==1.0.8
-Requires-Dist: pyyaml==6.0.1
-Requires-Dist: py-redis==1.1.1
+Requires-Dist: PyYAML
+Requires-Dist: schedule
+Requires-Dist: colorlog
+Requires-Dist: msgpack
+Requires-Dist: redis
 
 # Project description
 
@@ -34,7 +30,7 @@ Requires-Dist: py-redis==1.1.1
 # Install
 
 ~~~
-pip install asyncTask
+pip install asyncTaskmini
 ~~~
 
 # example
@@ -44,16 +40,16 @@ pip install asyncTask
 ~~~python
 
 import asyncio
-from asyncTask import at
+from asyncTaskmini import at
 from aiohttp import ClientSession
 
 
 # max_connections redis-pool 的最大连接数 currt 并发数 ，req_queue->存储在redis上的任务队列
 @at("req_queue", max_connections=30, currt=30)
 async def request(url):
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            print(r)
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      print(r)
 
 
 # req_queue2 is which queue your want to Save in for a redis -list
@@ -62,22 +58,22 @@ async def request(url):
 # You can think of it as the number of concurrent transactions
 @at("req_queue2", max_connections=30, currt=30)
 async def request2(url):  # 
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            print(r)
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      print(r)
 
 
 async def main():
-    url = "https://baidu.com"
-    for i in range(1000):
-        await request2.push(url)
-        await request.push(url)
+  url = "https://baidu.com"
+  for i in range(1000):
+    await request2.push(url)
+    await request.push(url)
 
-    await asyncio.gather(*[request.exec(), request2.exec()])  # 监听执行,worker 从redis 的对应 queue 中拉取任务进行载入,阻塞
+  await asyncio.gather(*[request.exec(), request2.exec()])  # 监听执行,worker 从redis 的对应 queue 中拉取任务进行载入,阻塞
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+  asyncio.run(main())
 ~~~
 
 - In particular, only the parameters currently supported are common data types in python, such as string, int, float,
@@ -131,49 +127,49 @@ if __name__ == '__main__':
 ~~~python
 
 import asyncio
-from asyncTask import at
+from asyncTaskmini import at
 from aiohttp import ClientSession
 
 
 # max_connections redis-pool 的最大连接数 currt 并发数 ，req_queue->存储在redis上的任务队列
 @at("req_queue", max_connections=30, currt=30)
 async def request(url):
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            # do some thing
-            await request2.push(url)
-            #  If you have resolved the sub-link here, 
-            #  you can directly push the sub-linked task here 
-            #  and share it with all workers in the cluster
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      # do some thing
+      await request2.push(url)
+      #  If you have resolved the sub-link here, 
+      #  you can directly push the sub-linked task here 
+      #  and share it with all workers in the cluster
 
 
 @at("req_queue2", max_connections=30, currt=30)
 async def request2(url):  # 假如这是一个子链接的任务
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            print(r)
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      print(r)
 
 
 async def main():
-    url = "https://baidu.com"
-    await request.push(url)  # 在此 push 你的首个任务， Push your first task
-    # or
-    await asyncio.gather(*[request.push(url) for i in range(100)])
-    # 假设你有100个链接要分发，你可以这样并发的分发
-    # Let's say you have 100 links to distribute, you can distribute them concurrently
+  url = "https://baidu.com"
+  await request.push(url)  # 在此 push 你的首个任务， Push your first task
+  # or
+  await asyncio.gather(*[request.push(url) for i in range(100)])
+  # 假设你有100个链接要分发，你可以这样并发的分发
+  # Let's say you have 100 links to distribute, you can distribute them concurrently
 
-    # async with request as r:  # 异步上下文管理器，隐式管理自动关闭，但是并不推荐
-    #     for i in range(10000):
-    #         await r.push(url)
+  # async with request as r:  # 异步上下文管理器，隐式管理自动关闭，但是并不推荐
+  #     for i in range(10000):
+  #         await r.push(url)
 
-    # Asynchronous Context Manager, implicit management is automatically turned off, but not recommended
+  # Asynchronous Context Manager, implicit management is automatically turned off, but not recommended
 
-    # It is recommended to use Display Release
-    await request.close()  # 释放资源, 显式管理，过多 job 时推荐
+  # It is recommended to use Display Release
+  await request.close()  # 释放资源, 显式管理，过多 job 时推荐
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+  asyncio.run(main())
 ~~~
 
 ## worker
@@ -186,34 +182,35 @@ if __name__ == '__main__':
 ~~~python
 
 import asyncio
-from asyncTask import at
+from asyncTaskmini import at
 from aiohttp import ClientSession
 
 
 # max_connections redis-pool 的最大连接数 currt 并发数 ，req_queue->存储在redis上的任务队列
 @at("req_queue", max_connections=30, currt=30)
 async def request(url):
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            # do some thing
-            await request2.push(url)
-            #  If you have resolved the sub-link here, 
-            #  you can directly push the sub-linked task here 
-            #  and share it with all workers in the cluster
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      # do some thing
+      await request2.push(url)
+      #  If you have resolved the sub-link here, 
+      #  you can directly push the sub-linked task here 
+      #  and share it with all workers in the cluster
 
 
 @at("req_queue2", max_connections=30, currt=30)
 async def request2(url):  # 假如这是一个子链接的任务
-    async with ClientSession() as s:
-        async with await s.get(url) as r:
-            print(r)
+  async with ClientSession() as s:
+    async with await s.get(url) as r:
+      print(r)
 
 
 async def main():
-    await asyncio.gather(*[request.exec(), request2.exec()])  # 监听执行|Listen to execution
+  await asyncio.gather(*[request.exec(), request2.exec()])  # 监听执行|Listen to execution
+
 
 if __name__ == '__main__':
-    asyncio.run(main())
+  asyncio.run(main())
 ~~~
 
 - worker 你可以部署到任何可以访问到 这个redis中任务队列的地方，你无需担心计算机故障或者程序故障导致的中断，任何中断都不会使得任务丢失，除非队列被删除或者redis缓存被清除。因为worker 从redis中拉取任务的同时要同时添加到一个set中缓存，这样才算成功拉取一个参数，如果中途程序被中断，新开启的worker会重新拉取缓冲中的所有任务，这里可能会有一些任务被其他worker执行，导致重复执行，所以可能会有重复的数据，但绝对不会丢失。 
