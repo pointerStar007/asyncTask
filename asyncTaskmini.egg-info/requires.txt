@@ -1,5 +1,0 @@
-PyYAML
-schedule
-colorlog
-msgpack
-redis

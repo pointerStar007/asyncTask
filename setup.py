@@ -10,12 +10,16 @@ from setuptools import setup, find_packages
 # 定义包的元数据
 setup(
     name='asyncTaskmini',  # 包的名称，在 PyPI 上必须是唯一的
-    version='0.1.0',  # 包的版本号，遵循 PEP 440
+    version='0.1.1',  # 包的版本号，遵循 PEP 440
     packages= find_packages(),  # 自动查找包和子包
     python_requires='>=3.6',
     # 手动指定包含哪些包（如果不需要自动查找）
     # packages=['your_package_name', 'your_package_name.subpackage'],
-
+    # include_package_data=True,  # 也可以使用include_package_data
+    # 或者使用package_data（如果你不想包含所有数据文件）
+    package_data={
+        'config': ['configTemplate/*.*'],
+    },
     # 包的元数据
     author='pointer',  # 作者名字
     author_email='pointerstar007@gmail.com',  # 作者邮箱
