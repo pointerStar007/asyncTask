@@ -71,7 +71,7 @@ if __name__ == '__main__':
   redis, if you don't need the console to output the relevant log information, you can set the log_to_console to True
 
 
-- 当你第一次运行，会在你执行的脚本路径中创建一个日志文件夹，用于存放相关日志文件；以及相关的配置文件，用于快速配置 redis 的连接，如果你不需要再控制台输出相关的日志信息，你可以将log_to_console设置为True
+- 当你第一次运行，会在你执行的脚本路径中创建一个日志文件夹，用于存放相关日志文件；以及相关的配置文件，用于快速配置 redis 的连接，如果你不需要在控制台输出相关的日志信息，你可以将log_to_console设置为True
 
 
 - If you want to use custom logs, you can override `asyncTask.utils.logs.get_logger`
@@ -87,14 +87,14 @@ if __name__ == '__main__':
   service.
 
 
-- 首先你需要有一个redis，目前只支持redis，你的集群多可以访问的一个redis 服务。
+- 首先你需要有一个redis，目前只支持redis，你的集群都可以访问的一个redis 服务。
 
 
 - Then you can plan which nodes are used as pushers and which nodes are used as workers, and of course you can also
   start multiple processes on the same computer to act as pushers and workers respectively
 
 
-- 然后你可以规划那些节点作为，pusher 哪些节点作为 worker，当然你也可以在同一台计算机中开启多个进程分别扮演pusher 和worker
+- 然后你可以规划哪些节点作为pusher 哪些节点作为 worker，当然你也可以在同一台计算机中开启多个进程分别扮演pusher 和worker
 
 ## pusher
 
